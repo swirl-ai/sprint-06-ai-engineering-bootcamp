@@ -6,7 +6,7 @@ from src.api.rag.graph import State
 from src.api.core.config import config
 
 
-ACC_THRESHOLD = 0.8
+ACC_THRESHOLD = 0.9
 SLEEP_TIME = 5
 
 ls_client = Client(api_key=config.LANGSMITH_API_KEY)
