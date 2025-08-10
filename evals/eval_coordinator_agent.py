@@ -83,6 +83,7 @@ results_resp_groq_llama_3_3_70b_versatile = ls_client.read_project(
 output_message = "\n"
 
 avg_metrics = []
+error_count = 0
 
 for result in zip(
     [results_resp_gpt_4_1, results_resp_gpt_4_1_mini, results_resp_groq_llama_3_3_70b_versatile],
@@ -91,13 +92,17 @@ for result in zip(
 
     avg_metric = result[0].feedback_stats[result[1]]["avg"]
     avg_metrics.append(avg_metric)
+    error_count += result[0].feedback_stats[result[1]]["errors"]
 
     if avg_metric >= ACC_THRESHOLD:
         output_message += f"✅ {result[1]} - Success: {avg_metric}\n"
     else:
         output_message += f"❌ {result[1]} - Failure: {avg_metric}\n"
 
-if all(metric >= ACC_THRESHOLD for metric in avg_metrics):
+if error_count > 0:
+    raise AssertionError(f"There were {error_count} errors while running evaluations.")
+elif all(metric >= ACC_THRESHOLD for metric in avg_metrics):
     print(output_message, flush = True)
 else:
     raise AssertionError(output_message)
+
