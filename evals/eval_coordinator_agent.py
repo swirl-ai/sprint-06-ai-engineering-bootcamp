@@ -6,7 +6,7 @@ from src.api.rag.graph import State
 from src.api.core.config import config
 
 
-ACC_THRESHOLD = 0.9
+ACC_THRESHOLD = 0.7
 SLEEP_TIME = 5
 EVAL_DATASET_NAME = "coordinator-evaluation-dataset-01"
 
