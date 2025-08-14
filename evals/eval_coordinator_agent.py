@@ -8,6 +8,7 @@ from src.api.core.config import config
 
 ACC_THRESHOLD = 0.7
 SLEEP_TIME = 5
+EVAL_DATASET_NAME = "coordinator-evaluation-dataset-01"
 
 ls_client = Client(api_key=config.LANGSMITH_API_KEY)
 
@@ -38,30 +39,33 @@ def next_agent_evaluator_groq_llama_3_3_70b_versatile(run, example):
 
 results_gpt_4_1 = ls_client.evaluate(
     lambda x: coordinator_agent_node(State(messages=x["messages"]), models=["gpt-4.1"]),
-    data="coordinator-evaluation-dataset",
+    data=EVAL_DATASET_NAME,
     evaluators=[
         next_agent_evaluator_gpt_4_1
     ],
-    experiment_prefix="gpt-4.1"
+    experiment_prefix="gpt-4.1",
+    num_repetitions=1
 )
 
 results_gpt_4_1_mini = ls_client.evaluate(
     lambda x: coordinator_agent_node(State(messages=x["messages"]), models=["gpt-4.1-mini"]),
-    data="coordinator-evaluation-dataset",
+    data=EVAL_DATASET_NAME,
     evaluators=[
         next_agent_evaluator_gpt_4_1_mini
     ],
-    experiment_prefix="gpt-4.1-mini"
+    experiment_prefix="gpt-4.1-mini",
+    num_repetitions=1
 )
 
 
 results_groq_llama_3_3_70b_versatile = ls_client.evaluate(
     lambda x: coordinator_agent_node(State(messages=x["messages"]), models=["groq/llama-3.3-70b-versatile"]),
-    data="coordinator-evaluation-dataset",
+    data=EVAL_DATASET_NAME,
     evaluators=[
         next_agent_evaluator_groq_llama_3_3_70b_versatile
     ],
-    experiment_prefix="groq/llama-3.3-70b-versatile"
+    experiment_prefix="groq/llama-3.3-70b-versatile",
+    num_repetitions=1
 )
 
 print(f"Sleeping for {SLEEP_TIME} seconds...")
